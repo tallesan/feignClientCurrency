@@ -1,0 +1,9 @@
+url: https://openexchangerates.org/api/
+param:
+  base: USD
+  alternative: RUB
+  appId:  700744bf017345169e132f0e2a83e98a
+  opponent: EUR
+urlImg: https://api.giphy.com/v1/gifs
+paramImg:
+  apiKey: fPziAd9dTCFm2dEu3t2OVvThNl5SG1tw
