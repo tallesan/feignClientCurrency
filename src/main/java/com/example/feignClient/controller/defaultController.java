@@ -3,7 +3,7 @@ package com.example.feignClient.controller;
 import com.example.feignClient.model.UserResponse;
 import com.example.feignClient.service.ServiceClientImpl;
 import com.example.feignClient.service.ServiceGiphy;
-import java.util.Map;
+import java.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,8 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class defaultController {
 
-  private ServiceClientImpl serviceClient;
-  private ServiceGiphy serviceGiphy;
+  private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+  private final ServiceClientImpl serviceClient;
+  private final ServiceGiphy serviceGiphy;
 
   @Autowired
   public defaultController(ServiceClientImpl serviceClient, ServiceGiphy serviceGiphy) {
@@ -22,48 +23,63 @@ public class defaultController {
     this.serviceGiphy = serviceGiphy;
   }
 
+  /**
+   * Стартуем клиент
+   */
   @GetMapping("/")
   public String getStartProg(Model model) {
     return "redirect:/index";
   }
 
+  /**
+   * выводим значение для базовой валюты
+   */
   @RequestMapping("/index")
   public String initClient(Model model) {
     UserResponse thisDay = serviceClient.getThisDay();
     UserResponse historyDay = serviceClient.getHistoryDay();
-    boolean comparison = serviceClient
-        .getCompareMoney(thisDay.getRates(), historyDay.getRates());
+    String behavior;
     String img;
-    if (comparison) {
-      img = serviceGiphy.getUrlGiphy("rich");
-    } else {
+    if (serviceClient
+        .getCompareMoney(thisDay.getRates(), historyDay.getRates())) {
       img = serviceGiphy.getUrlGiphy("broke");
+      behavior = "вниз";
+    } else {
+      img = serviceGiphy.getUrlGiphy("rich");
+      behavior = "вверх";
     }
+    model.addAttribute("thisDayDate", thisDay.getDateCurrency().format(FORMATTER));
+    model.addAttribute("historyDayDate", historyDay.getDateCurrency().format(FORMATTER));
     model.addAttribute("history", historyDay);
     model.addAttribute("thisDay", thisDay);
     model.addAttribute("img", img);
-    model.addAttribute("searchFalse", comparison);
+    model.addAttribute("behavior",behavior);
     return "index";
   }
 
-
+  /**
+   * выводим значение для альтернативной валюты
+   */
   @GetMapping("/commentRub")
   public String getRubChange(Model model) {
     UserResponse thisDay = serviceClient.changeMoney(serviceClient.getThisDay());
     UserResponse historyDay = serviceClient.changeMoney(serviceClient.getHistoryDay());
-    boolean comparison = serviceClient
-        .getCompareMoney(thisDay.getRates(), historyDay.getRates());
+    String behavior;
     String img;
-    if (comparison) {
-      img = serviceGiphy.getUrlGiphy("rich");
-    } else {
+    if (serviceClient
+        .getCompareMoney(thisDay.getRates(), historyDay.getRates())) {
       img = serviceGiphy.getUrlGiphy("broke");
+      behavior = "вниз";
+    } else {
+      img = serviceGiphy.getUrlGiphy("rich");
+      behavior = "вверх";
     }
-
+    model.addAttribute("thisDayDate", thisDay.getDateCurrency().format(FORMATTER));
+    model.addAttribute("historyDayDate", historyDay.getDateCurrency().format(FORMATTER));
     model.addAttribute("history", historyDay);
     model.addAttribute("thisDay", thisDay);
     model.addAttribute("img", img);
-    model.addAttribute("searchFalse", comparison);
+    model.addAttribute("behavior",behavior);
     return "rub_compare";
   }
 

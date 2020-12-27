@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 @Data
 @Component
 public class ParamQuery {
+
   @Value("${param.appId}")
   String appId;
   @Value("${param.base}")
@@ -15,4 +16,6 @@ public class ParamQuery {
   String opponent;
   @Value("${param.alternative}")
   String alternative;
+  @Value("${param.daysAgo}")
+  Integer daysAgo;
 }
