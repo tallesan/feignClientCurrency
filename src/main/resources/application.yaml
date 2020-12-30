@@ -1,10 +1,11 @@
-url: https://openexchangerates.org/api/
+urlCurrency: https://openexchangerates.org/api
+testCurrencyId: 66a24d3e496f4b7f84de75dd2e2c88aa
 param:
   appId: 700744bf017345169e132f0e2a83e98a
   base: USD
   alternative: RUB
   opponent: EUR
-  daysAgo: 1000
+  daysAgo: 1
 urlImg: https://api.giphy.com/v1/gifs
 paramImg:
   apiKey: fPziAd9dTCFm2dEu3t2OVvThNl5SG1tw

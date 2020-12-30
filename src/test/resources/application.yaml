@@ -1,4 +1,4 @@
-url: http://localhost:8888/
+urlCurrency: http://localhost:8888/
 param:
   base: USD
   alternative: RUB

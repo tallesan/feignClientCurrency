@@ -1,8 +1,8 @@
 package com.example.feignClient.service;
 
-import com.example.feignClient.client.UserClient;
+import com.example.feignClient.client.CurrencyClient;
+import com.example.feignClient.model.CurrencyResponse;
 import com.example.feignClient.model.ParamQuery;
-import com.example.feignClient.model.UserResponse;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
@@ -15,10 +15,10 @@ public class ServiceClientImpl implements ServiceClient {
   public static final LocalDateTime CURRENT_DATE = LocalDateTime.now();
 
   private final ParamQuery paramQuery;
-  private final UserClient client;
+  private final CurrencyClient client;
 
   @Autowired
-  public ServiceClientImpl(UserClient client, ParamQuery paramQuery) {
+  public ServiceClientImpl(CurrencyClient client, ParamQuery paramQuery) {
     this.client = client;
     this.paramQuery = paramQuery;
   }
@@ -27,27 +27,27 @@ public class ServiceClientImpl implements ServiceClient {
    * получаем текущие курсы
    */
   @Override
-  public UserResponse getThisDay() {
+  public CurrencyResponse getThisDay() {
 
-    UserResponse userResponse =
+    CurrencyResponse currencyResponse =
         client.getUser(paramQuery.getAppId(), paramQuery.getBase());
-    userResponse.setOpponent(paramQuery.getOpponent());
-    userResponse.setDateCurrency(CURRENT_DATE);
-    return userResponse;
+    currencyResponse.setOpponent(paramQuery.getOpponent());
+    currencyResponse.setDateCurrency(CURRENT_DATE);
+    return currencyResponse;
   }
 
   /**
    * получаем курсы предыдущего дня. Можно указывать сколько дней назад
    */
   @Override
-  public UserResponse getHistoryDay() {
+  public CurrencyResponse getHistoryDay() {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     String date = formatter.format(CURRENT_DATE.minusDays(paramQuery.getDaysAgo()));
-    UserResponse userResponse = client
+    CurrencyResponse currencyResponse = client
         .getUserHistory(date, paramQuery.getAppId(), paramQuery.getBase());
-    userResponse.setOpponent(paramQuery.getOpponent());
-    userResponse.setDateCurrency(CURRENT_DATE.minusDays(paramQuery.getDaysAgo()));
-    return userResponse;
+    currencyResponse.setOpponent(paramQuery.getOpponent());
+    currencyResponse.setDateCurrency(CURRENT_DATE.minusDays(paramQuery.getDaysAgo()));
+    return currencyResponse;
   }
 
   /**
@@ -58,6 +58,9 @@ public class ServiceClientImpl implements ServiceClient {
       Map<String, Double> changeCurrencyHistory) {
     double thisDay = changeCurrency.get(paramQuery.getOpponent());
     double historyDay = changeCurrencyHistory.get(paramQuery.getOpponent());
+    if (historyDay < 1) {
+      return thisDay < historyDay;
+    }
     return thisDay >= historyDay;
   }
 
@@ -65,14 +68,14 @@ public class ServiceClientImpl implements ServiceClient {
    * конвертируем в В альтернативную валюту
    */
   @Override
-  public UserResponse changeMoney(UserResponse userResponse) {
-    Double alternative = userResponse.getRates().get(paramQuery.getAlternative());
-    userResponse.setBase(paramQuery.getAlternative());
-    for (String search : userResponse.getRates().keySet()) {
-      Double tmp = userResponse.getRates().get(search);
-      userResponse.getRates().put(search, alternative / tmp);
+  public CurrencyResponse changeMoney(CurrencyResponse currencyResponse) {
+    Double alternative = currencyResponse.getRates().get(paramQuery.getAlternative());
+    currencyResponse.setBase(paramQuery.getAlternative());
+    for (String search : currencyResponse.getRates().keySet()) {
+      Double tmp = currencyResponse.getRates().get(search);
+      currencyResponse.getRates().put(search, alternative / tmp);
     }
-    return userResponse;
+    return currencyResponse;
   }
 
 }

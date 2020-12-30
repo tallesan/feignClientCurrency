@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 /**
  * Клиент для получения JSON объекта Gif-ки
  */
-@FeignClient(url = "${urlImg}", name = "UserClientGiphy")
-public interface UserClientGiphy {
+@FeignClient(url = "${urlImg}", name = "GiphyClient")
+public interface GiphyClient {
 
   /**
    * Передаем ключ и Тэг

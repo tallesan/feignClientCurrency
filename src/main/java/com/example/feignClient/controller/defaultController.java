@@ -1,6 +1,6 @@
 package com.example.feignClient.controller;
 
-import com.example.feignClient.model.UserResponse;
+import com.example.feignClient.model.CurrencyResponse;
 import com.example.feignClient.service.ServiceClientImpl;
 import com.example.feignClient.service.ServiceGiphy;
 import java.time.format.DateTimeFormatter;
@@ -36,8 +36,8 @@ public class defaultController {
    */
   @RequestMapping("/index")
   public String initClient(Model model) {
-    UserResponse thisDay = serviceClient.getThisDay();
-    UserResponse historyDay = serviceClient.getHistoryDay();
+    CurrencyResponse thisDay = serviceClient.getThisDay();
+    CurrencyResponse historyDay = serviceClient.getHistoryDay();
     String behavior;
     String img;
     if (serviceClient
@@ -62,8 +62,8 @@ public class defaultController {
    */
   @GetMapping("/commentRub")
   public String getRubChange(Model model) {
-    UserResponse thisDay = serviceClient.changeMoney(serviceClient.getThisDay());
-    UserResponse historyDay = serviceClient.changeMoney(serviceClient.getHistoryDay());
+    CurrencyResponse thisDay = serviceClient.changeMoney(serviceClient.getThisDay());
+    CurrencyResponse historyDay = serviceClient.changeMoney(serviceClient.getHistoryDay());
     String behavior;
     String img;
     if (serviceClient

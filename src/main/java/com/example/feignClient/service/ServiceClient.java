@@ -1,17 +1,17 @@
 package com.example.feignClient.service;
 
 
-import com.example.feignClient.model.UserResponse;
+import com.example.feignClient.model.CurrencyResponse;
 import java.util.Map;
 
 public interface ServiceClient {
 
-  UserResponse getThisDay();
+  CurrencyResponse getThisDay();
 
-  UserResponse getHistoryDay();
+  CurrencyResponse getHistoryDay();
 
   boolean getCompareMoney(Map<String, Double> changeCurrency,
       Map<String, Double> changeCurrencyHistory);
 
-  UserResponse changeMoney(UserResponse userResponse);
+  CurrencyResponse changeMoney(CurrencyResponse currencyResponse);
 }

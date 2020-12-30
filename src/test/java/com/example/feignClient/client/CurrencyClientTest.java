@@ -2,7 +2,7 @@ package com.example.feignClient.client;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.anyUrl;
 
-import com.example.feignClient.model.UserResponse;
+import com.example.feignClient.model.CurrencyResponse;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.common.ConsoleNotifier;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
@@ -20,10 +20,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class UserClientTest {
+public class CurrencyClientTest {
 
   @Autowired
-  UserClient userClient;
+  CurrencyClient currencyClient;
 
   @Rule
   public WireMockRule wireMockRule = new WireMockRule(WireMockConfiguration
@@ -42,22 +42,22 @@ public class UserClientTest {
 
   @Test
   public void shouldReturnUserResponseThisDay() {
-    UserResponse userResponse = userClient.getUser("1111", "USD");
-    Assertions.assertThat(userResponse.getRates().get("USD")).isEqualTo(1);
-    Assertions.assertThat(userResponse.getRates().size()).isEqualTo(171);
-    Assertions.assertThat(userResponse.getRates().get("RUB")).isEqualTo(74.145);
-    Assertions.assertThat(userResponse.getRates().get("GBP")).isEqualTo(0.749398);
-    Assertions.assertThat(userResponse.getTimestamp()).isEqualTo(1608915600);
+    CurrencyResponse currencyResponse = currencyClient.getUser("1111", "USD");
+    Assertions.assertThat(currencyResponse.getRates().get("USD")).isEqualTo(1);
+    Assertions.assertThat(currencyResponse.getRates().size()).isEqualTo(171);
+    Assertions.assertThat(currencyResponse.getRates().get("RUB")).isEqualTo(74.145);
+    Assertions.assertThat(currencyResponse.getRates().get("GBP")).isEqualTo(0.749398);
+    Assertions.assertThat(currencyResponse.getTimestamp()).isEqualTo(1608915600);
   }
 
   @Test
   public void historyDayTest() {
-    UserResponse userResponse = userClient.getUserHistory("2020-12-18", "1111", "USD");
-    Assertions.assertThat(userResponse.getRates().get("USD")).isEqualTo(1);
-    Assertions.assertThat(userResponse.getRates().size()).isEqualTo(171);
-    Assertions.assertThat(userResponse.getRates().get("RUB")).isEqualTo(74.145);
-    Assertions.assertThat(userResponse.getRates().get("GBP")).isEqualTo(0.749398);
-    Assertions.assertThat(userResponse.getTimestamp()).isEqualTo(1608915600);
+    CurrencyResponse currencyResponse = currencyClient.getUserHistory("2020-12-18", "1111", "USD");
+    Assertions.assertThat(currencyResponse.getRates().get("USD")).isEqualTo(1);
+    Assertions.assertThat(currencyResponse.getRates().size()).isEqualTo(171);
+    Assertions.assertThat(currencyResponse.getRates().get("RUB")).isEqualTo(74.145);
+    Assertions.assertThat(currencyResponse.getRates().get("GBP")).isEqualTo(0.749398);
+    Assertions.assertThat(currencyResponse.getTimestamp()).isEqualTo(1608915600);
   }
 
 

@@ -4,9 +4,8 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-
-import com.example.feignClient.client.UserClient;
-import com.example.feignClient.model.UserResponse;
+import com.example.feignClient.client.CurrencyClient;
+import com.example.feignClient.model.CurrencyResponse;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,10 +26,10 @@ class ServiceClientImplTest {
   ServiceClientImpl serviceClient;
 
   @Mock
-  UserClient userClient;
+  CurrencyClient currencyClient;
 
   public static Map<String, Double> currency;
-  public static UserResponse userResponse;
+  public static CurrencyResponse currencyResponse;
   public static Map<String, Double> currencyOpponent;
 
   @BeforeEach
@@ -52,43 +51,43 @@ class ServiceClientImplTest {
 
     LocalDateTime.now();
 
-    userResponse = new UserResponse(LocalDateTime.now(),"EUR","disclaimer","license",111, "USD", currency);
+    currencyResponse = new CurrencyResponse(LocalDateTime.now(),"EUR","disclaimer","license",111, "USD", currency);
 
   }
 
   @Test
   void testGetThisDay() {
-    when(userClient.getUser(anyString(), anyString())).thenReturn(
-        ServiceClientImplTest.userResponse);
-    UserResponse userResponse = userClient.getUser("1111", "USD");
+    when(currencyClient.getUser(anyString(), anyString())).thenReturn(
+        ServiceClientImplTest.currencyResponse);
+    CurrencyResponse currencyResponse = currencyClient.getUser("1111", "USD");
 
-    Assertions.assertThatObject(userResponse).isEqualTo(ServiceClientImplTest.userResponse);
-    Assertions.assertThat(userResponse.getBase()).isEqualTo("USD");
-    Assertions.assertThat(userResponse.getRates().size()).isEqualTo(5);
-    Assertions.assertThat(userResponse.getRates().get("EUR")).isEqualTo(0.82);
-    verify(userClient).getUser("1111", "USD");
+    Assertions.assertThatObject(currencyResponse).isEqualTo(ServiceClientImplTest.currencyResponse);
+    Assertions.assertThat(currencyResponse.getBase()).isEqualTo("USD");
+    Assertions.assertThat(currencyResponse.getRates().size()).isEqualTo(5);
+    Assertions.assertThat(currencyResponse.getRates().get("EUR")).isEqualTo(0.82);
+    verify(currencyClient).getUser("1111", "USD");
   }
 
   @Test
   void testGetHistoryDay() {
-    when(userClient.getUserHistory(anyString(), anyString(), anyString())).thenReturn(
-        ServiceClientImplTest.userResponse);
-    UserResponse userResponse = userClient.getUserHistory("2020-12-19", "1111", "USD");
-    Assertions.assertThat(userResponse.getRates().get("RUB")).isEqualTo(73.15);
-    verify(userClient).getUserHistory("2020-12-19", "1111", "USD");
+    when(currencyClient.getUserHistory(anyString(), anyString(), anyString())).thenReturn(
+        ServiceClientImplTest.currencyResponse);
+    CurrencyResponse currencyResponse = currencyClient.getUserHistory("2020-12-19", "1111", "USD");
+    Assertions.assertThat(currencyResponse.getRates().get("RUB")).isEqualTo(73.15);
+    verify(currencyClient).getUserHistory("2020-12-19", "1111", "USD");
   }
 
 
   @Test
   void getCompareMoney() {
     boolean actualBol = serviceClient.getCompareMoney(currency, currencyOpponent);
-    Assertions.assertThat(actualBol).isEqualTo(false);
+    Assertions.assertThat(actualBol).isEqualTo(true);
   }
 
   @Test
   void changeMoney() {
-    UserResponse userResponse = serviceClient.changeMoney(ServiceClientImplTest.userResponse);
-    Assertions.assertThat(userResponse.getRates().size()).isEqualTo(5);
-    Assertions.assertThat(userResponse.getRates().get("USD")).isEqualTo(73.15);
+    CurrencyResponse currencyResponse = serviceClient.changeMoney(ServiceClientImplTest.currencyResponse);
+    Assertions.assertThat(currencyResponse.getRates().size()).isEqualTo(5);
+    Assertions.assertThat(currencyResponse.getRates().get("USD")).isEqualTo(73.15);
   }
 }

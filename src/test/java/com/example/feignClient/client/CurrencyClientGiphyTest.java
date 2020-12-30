@@ -18,10 +18,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class UserClientGiphyTest {
+public class CurrencyClientGiphyTest {
 
   @Autowired
-  UserClientGiphy userClientGiphy;
+  GiphyClient giphyClient;
 
   @Rule
   public WireMockRule wireMockRule = new WireMockRule(WireMockConfiguration
@@ -36,7 +36,7 @@ public class UserClientGiphyTest {
         .withHeader("Content-Type", "application/json")
         .withBodyFile("testGiphi.json")
         ));
-    DataImg dataImg = userClientGiphy.getGiphyRich("1111", "rich");
+    DataImg dataImg = giphyClient.getGiphyRich("1111", "rich");
     Assertions.assertThat(dataImg.getAdditionalProperties()
         .get("data").getImageUrl())
         .isEqualTo("https://media1.giphy.com/media/UwPyIExTOTeoM/giphy.gif");

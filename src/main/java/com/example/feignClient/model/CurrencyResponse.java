@@ -23,7 +23,7 @@ import lombok.NoArgsConstructor;
     "base",
     "rates"
 })
-public class UserResponse {
+public class CurrencyResponse {
 
   private LocalDateTime dateCurrency;
   private String opponent;
