@@ -57,24 +57,24 @@ class ServiceClientImplTest {
 
   @Test
   void testGetThisDay() {
-    when(currencyClient.getUser(anyString(), anyString())).thenReturn(
+    when(currencyClient.getCurrency(anyString(), anyString())).thenReturn(
         ServiceClientImplTest.currencyResponse);
-    CurrencyResponse currencyResponse = currencyClient.getUser("1111", "USD");
+    CurrencyResponse currencyResponse = currencyClient.getCurrency("1111", "USD");
 
     Assertions.assertThatObject(currencyResponse).isEqualTo(ServiceClientImplTest.currencyResponse);
     Assertions.assertThat(currencyResponse.getBase()).isEqualTo("USD");
     Assertions.assertThat(currencyResponse.getRates().size()).isEqualTo(5);
     Assertions.assertThat(currencyResponse.getRates().get("EUR")).isEqualTo(0.82);
-    verify(currencyClient).getUser("1111", "USD");
+    verify(currencyClient).getCurrency("1111", "USD");
   }
 
   @Test
   void testGetHistoryDay() {
-    when(currencyClient.getUserHistory(anyString(), anyString(), anyString())).thenReturn(
+    when(currencyClient.getCurrencyHistory(anyString(), anyString(), anyString())).thenReturn(
         ServiceClientImplTest.currencyResponse);
-    CurrencyResponse currencyResponse = currencyClient.getUserHistory("2020-12-19", "1111", "USD");
+    CurrencyResponse currencyResponse = currencyClient.getCurrencyHistory("2020-12-19", "1111", "USD");
     Assertions.assertThat(currencyResponse.getRates().get("RUB")).isEqualTo(73.15);
-    verify(currencyClient).getUserHistory("2020-12-19", "1111", "USD");
+    verify(currencyClient).getCurrencyHistory("2020-12-19", "1111", "USD");
   }
 
 

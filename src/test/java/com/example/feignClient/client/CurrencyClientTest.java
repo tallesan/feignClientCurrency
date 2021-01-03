@@ -42,7 +42,7 @@ public class CurrencyClientTest {
 
   @Test
   public void shouldReturnUserResponseThisDay() {
-    CurrencyResponse currencyResponse = currencyClient.getUser("1111", "USD");
+    CurrencyResponse currencyResponse = currencyClient.getCurrency("1111", "USD");
     Assertions.assertThat(currencyResponse.getRates().get("USD")).isEqualTo(1);
     Assertions.assertThat(currencyResponse.getRates().size()).isEqualTo(171);
     Assertions.assertThat(currencyResponse.getRates().get("RUB")).isEqualTo(74.145);
@@ -52,7 +52,7 @@ public class CurrencyClientTest {
 
   @Test
   public void historyDayTest() {
-    CurrencyResponse currencyResponse = currencyClient.getUserHistory("2020-12-18", "1111", "USD");
+    CurrencyResponse currencyResponse = currencyClient.getCurrencyHistory("2020-12-18", "1111", "USD");
     Assertions.assertThat(currencyResponse.getRates().get("USD")).isEqualTo(1);
     Assertions.assertThat(currencyResponse.getRates().size()).isEqualTo(171);
     Assertions.assertThat(currencyResponse.getRates().get("RUB")).isEqualTo(74.145);

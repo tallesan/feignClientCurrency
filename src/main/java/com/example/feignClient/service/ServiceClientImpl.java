@@ -30,7 +30,7 @@ public class ServiceClientImpl implements ServiceClient {
   public CurrencyResponse getThisDay() {
 
     CurrencyResponse currencyResponse =
-        client.getUser(paramQuery.getAppId(), paramQuery.getBase());
+        client.getCurrency(paramQuery.getAppId(), paramQuery.getBase());
     currencyResponse.setOpponent(paramQuery.getOpponent());
     currencyResponse.setDateCurrency(CURRENT_DATE);
     return currencyResponse;
@@ -44,7 +44,7 @@ public class ServiceClientImpl implements ServiceClient {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     String date = formatter.format(CURRENT_DATE.minusDays(paramQuery.getDaysAgo()));
     CurrencyResponse currencyResponse = client
-        .getUserHistory(date, paramQuery.getAppId(), paramQuery.getBase());
+        .getCurrencyHistory(date, paramQuery.getAppId(), paramQuery.getBase());
     currencyResponse.setOpponent(paramQuery.getOpponent());
     currencyResponse.setDateCurrency(CURRENT_DATE.minusDays(paramQuery.getDaysAgo()));
     return currencyResponse;

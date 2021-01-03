@@ -15,13 +15,13 @@ public interface CurrencyClient {
    * Текущий курс
    */
   @GetMapping(value = "/latest.json?app_id={keyId}&base={base}")
-  CurrencyResponse getUser(@PathVariable("keyId") String keyId, @PathVariable("base") String base);
+  CurrencyResponse getCurrency(@PathVariable("keyId") String keyId, @PathVariable("base") String base);
 
   /**
    * Курс на заданную дату
    */
   @GetMapping(value = "/historical/{date}.json?app_id={keyId}&base={base}")
-  CurrencyResponse getUserHistory(@PathVariable("date") String date,
+  CurrencyResponse getCurrencyHistory(@PathVariable("date") String date,
       @PathVariable("keyId") String keyId, @PathVariable("base") String base);
 
 }

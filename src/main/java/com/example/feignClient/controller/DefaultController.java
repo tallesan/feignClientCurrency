@@ -11,14 +11,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-public class defaultController {
+public class DefaultController {
 
-  private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
   private final ServiceClientImpl serviceClient;
   private final ServiceGiphy serviceGiphy;
 
   @Autowired
-  public defaultController(ServiceClientImpl serviceClient, ServiceGiphy serviceGiphy) {
+  public DefaultController(ServiceClientImpl serviceClient, ServiceGiphy serviceGiphy) {
     this.serviceClient = serviceClient;
     this.serviceGiphy = serviceGiphy;
   }
@@ -38,22 +38,7 @@ public class defaultController {
   public String initClient(Model model) {
     CurrencyResponse thisDay = serviceClient.getThisDay();
     CurrencyResponse historyDay = serviceClient.getHistoryDay();
-    String behavior;
-    String img;
-    if (serviceClient
-        .getCompareMoney(thisDay.getRates(), historyDay.getRates())) {
-      img = serviceGiphy.getUrlGiphy("broke");
-      behavior = "вниз";
-    } else {
-      img = serviceGiphy.getUrlGiphy("rich");
-      behavior = "вверх";
-    }
-    model.addAttribute("thisDayDate", thisDay.getDateCurrency().format(FORMATTER));
-    model.addAttribute("historyDayDate", historyDay.getDateCurrency().format(FORMATTER));
-    model.addAttribute("history", historyDay);
-    model.addAttribute("thisDay", thisDay);
-    model.addAttribute("img", img);
-    model.addAttribute("behavior",behavior);
+    toModelArg(model, thisDay, historyDay);
     return "index";
   }
 
@@ -64,6 +49,12 @@ public class defaultController {
   public String getRubChange(Model model) {
     CurrencyResponse thisDay = serviceClient.changeMoney(serviceClient.getThisDay());
     CurrencyResponse historyDay = serviceClient.changeMoney(serviceClient.getHistoryDay());
+    toModelArg(model, thisDay, historyDay);
+    return "rub_compare";
+  }
+
+  private void toModelArg(Model model, CurrencyResponse thisDay, CurrencyResponse historyDay) {
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
     String behavior;
     String img;
     if (serviceClient
@@ -74,13 +65,12 @@ public class defaultController {
       img = serviceGiphy.getUrlGiphy("rich");
       behavior = "вверх";
     }
-    model.addAttribute("thisDayDate", thisDay.getDateCurrency().format(FORMATTER));
-    model.addAttribute("historyDayDate", historyDay.getDateCurrency().format(FORMATTER));
+    model.addAttribute("thisDayDate", thisDay.getDateCurrency().format(formatter));
+    model.addAttribute("historyDayDate", historyDay.getDateCurrency().format(formatter));
     model.addAttribute("history", historyDay);
     model.addAttribute("thisDay", thisDay);
     model.addAttribute("img", img);
-    model.addAttribute("behavior",behavior);
-    return "rub_compare";
+    model.addAttribute("behavior", behavior);
   }
 
 }
