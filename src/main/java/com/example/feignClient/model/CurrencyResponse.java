@@ -38,5 +38,4 @@ public class CurrencyResponse {
   @JsonProperty("rates")
   private Map<String, Double> rates;
 
-
 }

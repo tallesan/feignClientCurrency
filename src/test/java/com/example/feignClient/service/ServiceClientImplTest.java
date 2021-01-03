@@ -7,6 +7,7 @@ import static org.mockito.Mockito.when;
 import com.example.feignClient.client.CurrencyClient;
 import com.example.feignClient.model.CurrencyResponse;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 import org.assertj.core.api.Assertions;
@@ -49,7 +50,6 @@ class ServiceClientImplTest {
     currencyOpponent.put("RUB", 75.15);
     currencyOpponent.put("USD", 1D);
 
-    LocalDateTime.now();
 
     currencyResponse = new CurrencyResponse(LocalDateTime.now(),"EUR","disclaimer","license",111, "USD", currency);
 
@@ -60,11 +60,12 @@ class ServiceClientImplTest {
     when(currencyClient.getCurrency(anyString(), anyString())).thenReturn(
         ServiceClientImplTest.currencyResponse);
     CurrencyResponse currencyResponse = currencyClient.getCurrency("1111", "USD");
-
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     Assertions.assertThatObject(currencyResponse).isEqualTo(ServiceClientImplTest.currencyResponse);
     Assertions.assertThat(currencyResponse.getBase()).isEqualTo("USD");
     Assertions.assertThat(currencyResponse.getRates().size()).isEqualTo(5);
     Assertions.assertThat(currencyResponse.getRates().get("EUR")).isEqualTo(0.82);
+    Assertions.assertThat(currencyResponse.getDateCurrency().format(formatter)).isEqualTo(LocalDateTime.now().format(formatter));
     verify(currencyClient).getCurrency("1111", "USD");
   }
 
