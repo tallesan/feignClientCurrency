@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'com.example'
-version = 'myProject'
+version = '1.0'
 sourceCompatibility = '11'
 
 configurations {
