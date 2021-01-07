@@ -21,7 +21,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class CurrencyClientGiphyTest {
+public class GiphyClientTest {
 
   @Autowired
   private GiphyClient giphyClient;
@@ -31,8 +31,6 @@ public class CurrencyClientGiphyTest {
 
   @Autowired
   private ServiceGiphyImpl serviceGiphy;
-
-
 
   @Rule
   public WireMockRule wireMockRule = new WireMockRule(WireMockConfiguration
