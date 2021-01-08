@@ -73,7 +73,9 @@ public class ServiceClientImpl implements ServiceClient {
     currencyResponse.setBase(paramQuery.getAlternative());
     for (String search : currencyResponse.getRates().keySet()) {
       Double tmp = currencyResponse.getRates().get(search);
-      currencyResponse.getRates().put(search, alternative / tmp);
+      double scale = Math.pow(10, 6);
+      Double val = Math.round((alternative / tmp) * scale) / scale;
+      currencyResponse.getRates().put(search, val);
     }
     return currencyResponse;
   }
