@@ -5,7 +5,7 @@
         <option name="imageTag" value="feign-clien-cerrency" />
         <option name="buildCliOptions" value="" />
         <option name="command" value="" />
-        <option name="containerName" value="feignClientCurrencyTest" />
+        <option name="containerName" value="feignClientCurrency" />
         <option name="entrypoint" value="" />
         <option name="portBindings">
           <list>

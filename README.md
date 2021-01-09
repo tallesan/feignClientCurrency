@@ -8,7 +8,8 @@
    gif картинок)
 4. Созданы 2 вспомогательных класса которые подгружают параметры для курсов валют и для загрузки
    картинок (параметры беруться из application.yaml).
-5. Docker контейнер docker run -ti -p 8080:8080 tallesan/tallesan:feignClientCurrencyTest
+5. Тесты Написаны с помощью WireMock и выполняются на 8888 порту.   
+6. Docker контейнер docker run -d -p 8080:8080 tallesan/feign-client-currency:currencyClient
 
 # Примеры запуска
 
